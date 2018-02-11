@@ -33,7 +33,6 @@ import java.util.Map;
 
 import static io.netty.util.internal.ObjectUtil.*;
 import static io.netty.util.internal.StringUtil.*;
-import static io.netty.buffer.ByteBufUtil.decodeHexByte;
 
 /**
  * Splits an HTTP query string into a path string and key-value parameter pairs.
@@ -181,6 +180,21 @@ public class QueryStringDecoder {
             params = decodeParams(uri, pathEndIdx(), charset, maxParams);
         }
         return params;
+    }
+
+    /**
+     * Returns the raw path string of the URI.
+     */
+    public String rawPath() {
+        return uri.substring(0, pathEndIdx());
+    }
+
+    /**
+     * Returns raw query string of the URI.
+     */
+    public String rawQuery() {
+        int start = pathEndIdx() + 1;
+        return start < uri.length() ? uri.substring(start) : EMPTY_STRING;
     }
 
     private int pathEndIdx() {
